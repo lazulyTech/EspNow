@@ -37,6 +37,7 @@ public:
         }
     }
 
+    void Init(Role _role, esp_now_send_cb_t send_cb, esp_now_recv_cb_t recv_cb);
     bool addPeer(uint8_t* address);
     
     template <typename Message>
