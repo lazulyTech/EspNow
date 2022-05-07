@@ -12,7 +12,7 @@ EspNow::EspNow(){
     }
 }
 
-void EspNow::Init(Role _role, esp_now_send_cb_t send_cb, esp_now_recv_cb_t recv_cb,){
+void EspNow::Init(Role _role, esp_now_send_cb_t send_cb, esp_now_recv_cb_t recv_cb){
     role = _role;
     if(role == MEMBER){
         esp_now_register_send_cb(send_cb);
