@@ -7,6 +7,7 @@
     #include <M5Stack.h>
 #else
     #include <Arduino.h>
+    #include <Esp.h>
 #endif
 #include <esp_now.h>
 #include <WiFi.h>

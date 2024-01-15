@@ -1,4 +1,5 @@
 #include "EspNow.h"
+#include <esp_now.h>
 
 esp_now_peer_info_t EspNow::peerInfo;
 
