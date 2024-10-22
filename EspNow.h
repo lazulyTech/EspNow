@@ -1,3 +1,7 @@
+//
+// Created by Eisuke Kato on 24/10/22.
+//
+
 #ifndef ESPNOW_H
 #define ESPNOW_H
 
@@ -18,39 +22,30 @@ enum Role{
     MEMBER
 };
 
+void _OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
+void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
+
 class EspNow {
 private:
     Role role;
+    uint32_t structSize;
+
 public:
     static esp_now_peer_info_t peerInfo;
+    static void (*on_sent_callback)(const uint8_t*, esp_now_send_status_t);
+    static void (*on_recv_callback)(const uint8_t*, const uint8_t*, int);
     EspNow();
 
-    template <typename esp_now_cb>
-    void Init(Role _role, esp_now_cb cb){
-        role = _role;
-        if(role == SENDER || role == MEMBER){
-            esp_now_register_send_cb((esp_now_send_cb_t)cb);
-            peerInfo.channel = 0;
-            peerInfo.encrypt = false;
-        }
-        if(role == RECEIVER || role == MEMBER){
-            esp_now_register_recv_cb((esp_now_recv_cb_t)cb);
-        }
-    }
+    void Init(Role _role, uint32_t structSize);
 
-    void Init(Role _role, esp_now_send_cb_t send_cb, esp_now_recv_cb_t recv_cb);
     bool addPeer(uint8_t* address);
-    
-    template <typename Message>
-    bool send(const uint8_t* address, Message message){
-        if(role == SENDER || role == MEMBER){
-            esp_err_t result;
-            result = esp_now_send(address, (uint8_t*) &message, sizeof(Message));
-            return (result == ESP_OK);
-        } else {
-            return false;
-        }
-    }
+
+    void set_SentCallback(void (*Callback)(const uint8_t*, esp_now_send_status_t));
+    void set_RecvCallback(void (*Callback)(const uint8_t*, const uint8_t*, int));
+
+    uint8_t* getData();
+
+    bool send(const uint8_t* address, uint8_t* message);
 };
 
 #endif //ESPNOW_H
