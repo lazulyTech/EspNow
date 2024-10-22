@@ -22,31 +22,56 @@
 This library allows an ESP32-based board to communicate with other ESP32-based boards by same type of struct.
 
 To use this library:
-1. Write this
+1. Include this library
 
 ``` c
 #include <EspNow.h>
 ```
 
-2. Write this
+2. Make struct like this
 
 ```c
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-    char macStr[18];
-    Serial.print("Packet to: ");
-    // Copies the sender mac address to a string
-    snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
-            mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-    Serial.print(macStr);
-    Serial.print(" send status:\t");
-    Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+// before setup()
+typedef struct __attribute__((__packed__)) {
+    uint8_t test;
+} dataStruct;
+
+dataStruct sendStruct; // for send
+dataStruct recvStruct; // for receive
+
+EspNow espNow;
+```
+
+3. Make callback function
+```c
+void OnDataSent(const uint8_t* macAddr, esp_now_send_status_t status) {
+    // write here
 }
 
-void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-    // Serial.println("Receive!");
-    Send_struct buf;
-    memcpy(&buf, incomingData, sizeof(buf));
-    getData = buf;
+void OnDataRecv(const uint8_t* macAddr, const uint8_t* data, int len) {
+    // write here
+    // we need codes to copy received data to receive struct
+    memcpy(&recvStruct, data, len);
 }
+```
+
+4. Initialize EspNow class in setup()
+```c
+espNow.set_SentCallback(OnDataSent);
+espNow.set_RecvCallback(OnDataRecv);
+
+espNow.Init(MEMBER, sizeof(dataStruct));
+
+espNow.addPeer(addr1);
+espNow.addPeer(addr2);
+```
+
+5. Send
+```c
+// send to addr1
+espNow.send(addr1, (uint8_t*)&sendStruct);
+
+// send to all device
+espNow.send(0, (uint8_t*)&sendStruct);
 ```
 
