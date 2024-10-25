@@ -22,9 +22,10 @@
 This library allows an ESP32-based board to communicate with other ESP32-based boards by same type of struct.
 
 To use this library:
-1. Include this library
+1. Include this library  
 
 ``` c
+#include <Arduino.h> // NOTE: Include libraries like Arduino, M5Unified before including EspNow
 #include <EspNow.h>
 ```
 

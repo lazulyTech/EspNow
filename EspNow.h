@@ -5,14 +5,14 @@
 #ifndef ESPNOW_H
 #define ESPNOW_H
 
-#if defined(ARDUINO_M5Stick_C)
-    #include <M5StickCPlus.h>
-#elif defined(M5Stack_Core_ESP32)
-    #include <M5Stack.h>
-#else
-    #include <Arduino.h>
-    #include <Esp.h>
-#endif
+/* #if defined(ARDUINO_M5Stick_C) */
+/*     #include <M5StickCPlus.h> */
+/* #elif defined(M5Stack_Core_ESP32) */
+/*     #include <M5Stack.h> */
+/* #else */
+/*     #include <Arduino.h> */
+/*     #include <Esp.h> */
+/* #endif */
 #include <esp_now.h>
 #include <WiFi.h>
 
