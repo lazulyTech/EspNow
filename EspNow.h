@@ -13,39 +13,38 @@
 /*     #include <Arduino.h> */
 /*     #include <Esp.h> */
 /* #endif */
-#include <esp_now.h>
-#include <WiFi.h>
 
-enum Role{
-    SENDER,
-    RECEIVER,
-    MEMBER
-};
+#include <WiFi.h>
+#include <esp_now.h>
+
+enum Role { SENDER, RECEIVER, MEMBER };
 
 void _OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
 void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
 
 class EspNow {
 private:
-    Role role;
-    uint32_t structSize;
+  Role role;
+  uint32_t structSize;
 
 public:
-    static esp_now_peer_info_t peerInfo;
-    static void (*on_sent_callback)(const uint8_t*, esp_now_send_status_t);
-    static void (*on_recv_callback)(const uint8_t*, const uint8_t*, int);
-    EspNow();
+  static esp_now_peer_info_t peerInfo;
+  static void (*on_sent_callback)(const uint8_t *, esp_now_send_status_t);
+  static void (*on_recv_callback)(const uint8_t *, const uint8_t *, int);
+  EspNow(wifi_mode_t mode = WIFI_STA);
 
-    void Init(Role _role, uint32_t structSize);
+  void Init(Role _role, uint32_t structSize);
 
-    bool addPeer(uint8_t* address);
+  bool addPeer(uint8_t *address);
 
-    void set_SentCallback(void (*Callback)(const uint8_t*, esp_now_send_status_t));
-    void set_RecvCallback(void (*Callback)(const uint8_t*, const uint8_t*, int));
+  void set_SentCallback(void (*Callback)(const uint8_t *,
+                                         esp_now_send_status_t));
+  void set_RecvCallback(void (*Callback)(const uint8_t *, const uint8_t *,
+                                         int));
 
-    uint8_t* getData();
+  uint8_t *getData();
 
-    bool send(const uint8_t* address, uint8_t* message);
+  bool send(const uint8_t *address, uint8_t *message);
 };
 
-#endif //ESPNOW_H
+#endif // ESPNOW_H
