@@ -67,13 +67,4 @@ void EspNow::set_RecvCallback(void (*Callback)(const uint8_t *, const uint8_t *,
                                                int)) {
   on_recv_callback = Callback;
 }
-
-bool EspNow::send(const uint8_t *address, uint8_t *message) {
-  if (role == SENDER || role == MEMBER) {
-    esp_err_t result;
-    result = esp_now_send(address, message, structSize);
-    return (result == ESP_OK);
-  } else {
-    return false;
-  }
 }
