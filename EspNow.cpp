@@ -25,7 +25,7 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData,
 }
 
 EspNow::EspNow(wifi_mode_t mode) {
-  if (mode != NULL) {
+  if (mode != WIFI_MODE_NULL) {
     WiFi.mode(mode);
   }
   if (esp_now_init() != ESP_OK) {
@@ -66,5 +66,4 @@ void EspNow::set_SentCallback(void (*Callback)(const uint8_t *,
 void EspNow::set_RecvCallback(void (*Callback)(const uint8_t *, const uint8_t *,
                                                int)) {
   on_recv_callback = Callback;
-}
 }

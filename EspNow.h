@@ -45,14 +45,14 @@ public:
   uint8_t *getData();
 
   template <typename Message>
-  bool send(const uint8_t *address, Message *message) {
+  bool send(const uint8_t *address, Message &message) {
     if (role == SENDER || role == MEMBER) {
       esp_err_t result;
-      result = esp_now_send(address, (uint8_t *)&message, sizeof(message));
+      result = esp_now_send(address, (uint8_t *)&message, sizeof(Message));
       return (result == ESP_OK);
     } else {
       return false;
     }
-  };
-
+  }
+};
 #endif // ESPNOW_H
