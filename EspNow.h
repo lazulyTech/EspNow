@@ -16,6 +16,7 @@
 
 #include <WiFi.h>
 #include <esp_now.h>
+#include <esp_wifi.h>
 
 enum Role { SENDER, RECEIVER, MEMBER };
 
@@ -31,7 +32,7 @@ public:
   static esp_now_peer_info_t peerInfo;
   static void (*on_sent_callback)(const uint8_t *, esp_now_send_status_t);
   static void (*on_recv_callback)(const uint8_t *, const uint8_t *, int);
-  EspNow(wifi_mode_t mode = WIFI_STA);
+  EspNow(wifi_mode_t mode = WIFI_STA, uint8_t channel = NULL);
 
   void Init(Role _role, uint32_t structSize);
 

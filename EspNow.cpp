@@ -4,6 +4,7 @@
 
 #include "EspNow.h"
 #include <esp_now.h>
+#include <esp_wifi.h>
 
 esp_now_peer_info_t EspNow::peerInfo;
 void (*EspNow::on_sent_callback)(const uint8_t *, esp_now_send_status_t);
@@ -24,9 +25,10 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData,
   }
 }
 
-EspNow::EspNow(wifi_mode_t mode) {
-  if (mode != WIFI_MODE_NULL) {
-    WiFi.mode(mode);
+EspNow::EspNow(wifi_mode_t mode, uint8_t channel) {
+  WiFi.mode(mode);
+  if (channel != NULL) {
+    esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
   }
   if (esp_now_init() != ESP_OK) {
     Serial.println("Error initializing ESP-NOW");
